@@ -32,7 +32,7 @@ Darshana Wijesinghe
 NOTE: Some services are still under enhancement.
 
 | **Service**                          | **Description**                                | **Port**            |
-|--------------------------------------|------------------------------------------------|---------------------|
+|:---                                  |:---                                            |:---                 |
 | **User Service (EP.User)**           | User registration and authentication           | 5001                |
 | **Product Service (EP.Product)**     | Product management (CRUD)                      | 5002                |
 | **Order Service (EP.Order)**         | Order creation and validation                  | 5003                |
@@ -85,7 +85,7 @@ Inventory Service
 ## RabbitMQ Events
 
 | **Event**           | **Triggered By** | **Consumed By**          | **Purpose**                       |
-|---------------------|------------------|--------------------------|-----------------------------------|
+|:---                 |:---              |:---                      |:---                               |
 | Product creation    | ProductService   | ProductCreatedConsumer   | Add product to inventory          |
 | Order placing       | OrderService     | OrderPlacedConsumer      | Manage the product inventory      |
 
