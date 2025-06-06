@@ -1,0 +1,88 @@
+﻿services:
+  user-service:                       # User API container
+    build:
+     context: .
+     dockerfile: EP.User/Dockerfile
+    ports:
+      - "5001:8080"                   # HostPort:ContainerPort
+    depends_on:
+      platformsql:
+        condition: service_started    # Wait for database container
+    environment:                      # Pass connection string, env vars
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=usersdb;User Id=sa;Password=ssa@1234;
+
+  product-service:                    # Product API container
+    build:
+     context: .
+     dockerfile: EP.Product/Dockerfile
+    ports:
+      - "5002:8080"
+    depends_on:
+      platformsql:
+        condition: service_started
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=productsdb;User Id=sa;Password=ssa@1234;
+
+  order-service:                      # Order API container
+    build:
+     context: .
+     dockerfile: EP.Order/Dockerfile
+    ports:
+      - "5003:8080"
+    depends_on:
+      platformsql:
+        condition: service_started
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=ordersdb;User Id=sa;Password=ssa@1234;
+
+  inventory-service:                  # Inventory API container
+    build:
+     context: .
+     dockerfile: EP.Inventory/Dockerfile
+    ports:
+      - "5004:8080"
+    depends_on:
+      platformsql:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy    # Ensure it's actually ready to accept connections
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=inventorydb;User Id=sa;Password=ssa@1234;
+      - RabbitMq__HostName=rabbitmq
+      - RabbitMq__UserName=guest
+      - RabbitMq__Password=guest
+      - MessageQueues__ProductCreated=product-created-queue  # Product created queue
+      - MessageQueues__OrderPlaced=order-placed-queue        # Order placed queue
+
+  platformsql:                        # SQL Server container
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "ssa@1234"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - usersqlvolume:/var/opt/mssql  # Persist data
+
+  rabbitmq:                           # RabbitMQ container
+    image: rabbitmq:3-management
+    container_name: ecorabbitmq
+    ports:
+      - "5672:5672"                   # AMQP (RabbitMQ)
+      - "15672:15672"                 # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:                      # Container health check
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  usersqlvolume:                      # Persistent storage for the SQL Server database used by the services
