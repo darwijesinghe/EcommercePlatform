@@ -31,47 +31,15 @@ Darshana Wijesinghe
 
 NOTE: Some services are still under enhancement.
 
-<table style="border: 1px solid #474747; border-collapse: collapse;" cellpadding="8" cellspacing="0">
-  <thead>
-    <tr style="border: 1px solid #474747;">
-      <th style="border: 1px solid #474747;">Service</th>
-      <th style="border: 1px solid #474747;">Description</th>
-      <th style="border: 1px solid #474747;">Port</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>User Service (EP.User)</strong></td>
-      <td style="border: 1px solid #474747;">User registration and authentication</td>
-      <td style="border: 1px solid #474747;">5001</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>Product Service (EP.Product)</strong></td>
-      <td style="border: 1px solid #474747;">Product management (CRUD)</td>
-      <td style="border: 1px solid #474747;">5002</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>Order Service (EP.Order)</strong></td>
-      <td style="border: 1px solid #474747;">Order creation and validation</td>
-      <td style="border: 1px solid #474747;">5003</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>Inventory Service (EP.Inventory)</strong></td>
-      <td style="border: 1px solid #474747;">Inventory tracking per product</td>
-      <td style="border: 1px solid #474747;">5004</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>RabbitMQ</strong></td>
-      <td style="border: 1px solid #474747;">Message broker for inter-service events</td>
-      <td style="border: 1px solid #474747;">5672 / 15672 (UI)</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;"><strong>SQL Server</strong></td>
-      <td style="border: 1px solid #474747;">Database for services</td>
-      <td style="border: 1px solid #474747;">1433</td>
-    </tr>
-  </tbody>
-</table>
+| **Service**                          | **Description**                                | **Port**            |
+|--------------------------------------|------------------------------------------------|---------------------|
+| **User Service (EP.User)**           | User registration and authentication           | 5001                |
+| **Product Service (EP.Product)**     | Product management (CRUD)                      | 5002                |
+| **Order Service (EP.Order)**         | Order creation and validation                  | 5003                |
+| **Inventory Service (EP.Inventory)** | Inventory tracking per product                 | 5004                |
+| **RabbitMQ**                         | Message broker for inter-service events        | 5672 / 15672 (UI)   |
+| **SQL Server**                       | Database for services                          | 1433                |
+
 
 ## API Endpoints
 ```json5
@@ -116,30 +84,11 @@ Inventory Service
 
 ## RabbitMQ Events
 
-<table style="border: 1px solid #474747; border-collapse: collapse;" cellpadding="8" cellspacing="0">
-  <thead>
-    <tr style="border: 1px solid #474747;">
-      <th style="border: 1px solid #474747;">Event</th>
-      <th style="border: 1px solid #474747;">Triggered By</th>
-      <th style="border: 1px solid #474747;">Consumed By</th>
-      <th style="border: 1px solid #474747;">Purpose</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;">Product creation</td>
-      <td style="border: 1px solid #474747;">ProductService</td>
-      <td style="border: 1px solid #474747;">ProductCreatedConsumer</td>
-      <td style="border: 1px solid #474747;">Add product to inventory</td>
-    </tr>
-    <tr style="border: 1px solid #474747;">
-      <td style="border: 1px solid #474747;">Order placing</td>
-      <td style="border: 1px solid #474747;">OrderService</td>
-      <td style="border: 1px solid #474747;">OrderPlacedConsumer</td>
-      <td style="border: 1px solid #474747;">Manage the product inventory</td>
-    </tr>
-  </tbody>
-</table>
+| **Event**           | **Triggered By** | **Consumed By**          | **Purpose**                       |
+|---------------------|------------------|--------------------------|-----------------------------------|
+| Product creation    | ProductService   | ProductCreatedConsumer   | Add product to inventory          |
+| Order placing       | OrderService     | OrderPlacedConsumer      | Manage the product inventory      |
+
 
 ## Access services at:
 
