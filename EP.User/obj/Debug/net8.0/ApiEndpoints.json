@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "API.User.Controllers.UserController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/User/get-all-user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.User.Controllers.UserController",
+    "Method": "RegisterNewUser",
+    "RelativePath": "api/User/register-user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "API.User.Models.User",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
