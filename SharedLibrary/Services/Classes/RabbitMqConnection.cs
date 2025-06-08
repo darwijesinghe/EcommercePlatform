@@ -5,6 +5,9 @@ using SharedLibrary.Settings;
 
 namespace SharedLibrary.Services.Classes
 {
+    /// <summary>
+    /// Provides an implementation of <see cref="IRabbitMqConnection"/> that handles the RabbitMQ connection functionalities.
+    /// </summary>
     public class RabbitMqConnection : IRabbitMqConnection
     {
         // Connection instance

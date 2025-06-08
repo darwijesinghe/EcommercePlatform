@@ -73,6 +73,9 @@ namespace EP.Inventory.Services.Classes
 
                                 repository.Update(product);
                                 await repository.SaveChangesAsync();
+
+                                // just log to console
+                                Console.WriteLine($"✅ Product quantity updated: {product.ProductName} x{product.Quantity}");
                             }
                         }
                     }

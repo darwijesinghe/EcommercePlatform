@@ -1,4 +1,5 @@
 ﻿using EP.Product.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DTOs;
 
@@ -21,9 +22,12 @@ namespace EP.Product.Controllers
 
         /// <summary>
         /// Adds a new product to the database.
+        /// <br/>
+        /// Only users with the <c>Admin</c> role are authorized to access this endpoint.
         /// </summary>
         /// <param name="data">The type of <see cref="ProductDto"/> that contains the product data.</param>
         [HttpPost("add-product")]
+        [Authorize(Roles = "Admin")]
         public async Task<JsonResult> AddNewProduct([FromBody] ProductDto data)
         {
             try
@@ -67,7 +71,7 @@ namespace EP.Product.Controllers
         /// <summary>
         /// Retrieves a products by its id.
         /// </summary>
-        /// <param name="id">The PK of the product.</param>
+        /// <param name="id">The unique identifier of the product</param>
         [HttpGet("get-a-product")]
         public async Task<JsonResult> GetProduct(int id)
         {

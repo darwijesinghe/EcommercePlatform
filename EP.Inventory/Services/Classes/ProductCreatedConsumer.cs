@@ -65,7 +65,7 @@ namespace EP.Inventory.Services.Classes
                             // mapping the data
                             var obj = new InventoryItem
                             {
-                                ProductId   = data.Id!.Value,
+                                ProductId   = data.Id.Value,
                                 ProductName = data.Name,
                                 Quantity    = data.Quantity
                             };
@@ -74,11 +74,13 @@ namespace EP.Inventory.Services.Classes
                             await repository.SaveChangesAsync();
 
                             // just log to console
-                            Console.WriteLine($"✅ Inventory item created: {data.Name} x{data.Quantity}");
+                            Console.WriteLine($"✅ Inventory item created: {obj.ProductName} x{obj.Quantity}");
                         }
-
-                        // just log to console
-                        Console.WriteLine($"✅ This product is already exist: {data.Name}");
+                        else
+                        {
+                            // just log to console
+                            Console.WriteLine($"✅ This product is already exist in the inventory: {data.Name}");
+                        }
                     }
                 };
 

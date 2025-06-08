@@ -39,12 +39,6 @@
         /// after the current one expires without re-authenticating the user.
         /// </summary>
         public string RefreshToken { get; set; }
-
-        /// <summary>
-        /// A token that allows the user to reset their password.
-        /// Typically included only when a password reset is requested.
-        /// </summary>
-        public string ResetToken   { get; set; }
     }
 
 }

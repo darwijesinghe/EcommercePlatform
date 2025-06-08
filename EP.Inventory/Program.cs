@@ -18,33 +18,23 @@ public class Program
 
         builder.Services.AddControllers();
 
+        // Application settings
+        builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
+        builder.Services.Configure<MessageQueues>(builder.Configuration.GetSection("MessageQueues"));
+
         // Database service
         builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
-
-        // RabbitMQ settings
-        builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
-
-        // RabbitMQ queues
-        builder.Services.Configure<MessageQueues>(builder.Configuration.GetSection("MessageQueues"));
-
-        // Repository service
-        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-        // RabbitMQ connection
-        builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-
-        // Business services
-        builder.Services.AddScoped<IInventoryService, InventoryService>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        // Product created consumer
+        // Application services
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        builder.Services.AddSingleton<IRabbitMqConnection      , RabbitMqConnection>();
+        builder.Services.AddScoped<IInventoryService           , InventoryService>();
         builder.Services.AddHostedService<ProductCreatedConsumer>();
-
-        // Order placed consumer
         builder.Services.AddHostedService<OrderPlacedConsumer>();
 
         var app = builder.Build();

@@ -1,14 +1,27 @@
 ﻿services:
-  user-service:                       # User API container
+  auth-service:                       # AUTH container
     build:
      context: .
-     dockerfile: EP.User/Dockerfile
+     dockerfile: EP.Auth/Dockerfile
     ports:
       - "5001:8080"                   # HostPort:ContainerPort
     depends_on:
       platformsql:
         condition: service_started    # Wait for database container
     environment:                      # Pass connection string, env vars
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=authdb;User Id=sa;Password=ssa@1234;
+
+  user-service:                       # User API container
+    build:
+     context: .
+     dockerfile: EP.User/Dockerfile
+    ports:
+      - "5002:8080"
+    depends_on:
+      platformsql:
+        condition: service_started
+    environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=usersdb;User Id=sa;Password=ssa@1234;
 
@@ -17,7 +30,7 @@
      context: .
      dockerfile: EP.Product/Dockerfile
     ports:
-      - "5002:8080"
+      - "5003:8080"
     depends_on:
       platformsql:
         condition: service_started
@@ -30,7 +43,7 @@
      context: .
      dockerfile: EP.Order/Dockerfile
     ports:
-      - "5003:8080"
+      - "5004:8080"
     depends_on:
       platformsql:
         condition: service_started
@@ -43,7 +56,7 @@
      context: .
      dockerfile: EP.Inventory/Dockerfile
     ports:
-      - "5004:8080"
+      - "5005:8080"
     depends_on:
       platformsql:
         condition: service_started
@@ -52,11 +65,6 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=platformsql,1433;Database=inventorydb;User Id=sa;Password=ssa@1234;
-      - RabbitMq__HostName=rabbitmq
-      - RabbitMq__UserName=guest
-      - RabbitMq__Password=guest
-      - MessageQueues__ProductCreated=product-created-queue  # Product created queue
-      - MessageQueues__OrderPlaced=order-placed-queue        # Order placed queue
 
   platformsql:                        # SQL Server container
     image: mcr.microsoft.com/mssql/server:2022-latest

@@ -9,7 +9,7 @@ namespace EP.Product.Services.Interfaces
     public interface IProductService
     {
         /// <summary>
-        /// Retrieves all products.
+        /// Retrieves all the products.
         /// </summary>
         /// <returns>
         /// A <see cref="Result{IEnumerable{ProductDto}}"/> containing a list of products.
@@ -17,9 +17,9 @@ namespace EP.Product.Services.Interfaces
         Task<Result<IEnumerable<ProductDto>>> GetAllProductsAsync();
 
         /// <summary>
-        /// Retrieves product by its PK.
+        /// Retrieves the product by unique identifier.
         /// </summary>
-        /// <param name="id">The PK of the product.</param>
+        /// <param name="id">The unique identifier of the product.</param>
         /// <returns>
         /// A <see cref="Result{ProductDto}"/> containing a data of the product.
         /// </returns>

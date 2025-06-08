@@ -1,6 +1,7 @@
 using EP.User.Data.Persistence;
 using EP.User.Data.Repository.Classes;
 using EP.User.Helpers.Extensions;
+using EP.User.Services.Classes;
 using EP.User.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Services.Interfaces;
@@ -19,15 +20,13 @@ public class Program
         builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
 
-        // Repository service
-        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-        // Business services
-        builder.Services.AddScoped<IUserService, EP.User.Services.Classes.UserService>();
-
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Application services
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        builder.Services.AddScoped<IUserService                , UserService>();
 
         var app = builder.Build();
 

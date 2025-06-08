@@ -9,7 +9,7 @@ namespace EP.Order.Services.Interfaces
     public interface IOrderService
     {
         /// <summary>
-        /// Retrieves all orders.
+        /// Retrieves all the orders.
         /// </summary>
         /// <returns>
         /// A <see cref="Result{IEnumerable{OrderDto}}"/> containing a list of orders.
@@ -17,9 +17,9 @@ namespace EP.Order.Services.Interfaces
         Task<Result<IEnumerable<OrderDto>>> GetAllOrdersAsync();
 
         /// <summary>
-        /// Retrieves order by its PK.
+        /// Retrieves order by unique identifier.
         /// </summary>
-        /// <param name="id">The PK of the order.</param>
+        /// <param name="id">The unique identifier of the order.</param>
         /// <returns>
         /// A <see cref="Result{OrderDto}"/> containing a data of the order.
         /// </returns>

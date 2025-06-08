@@ -64,12 +64,12 @@ namespace EP.Order.Services.Classes
             try
             {
                 // gets all orders
-                var orders = await _repository.GetAllAsync();
-                if (orders.IsNullOrEmpty())
+                var entities = await _repository.GetAllAsync();
+                if (entities.IsNullOrEmpty())
                     return new Result<IEnumerable<OrderDto>> { Message = "No data found." };
 
                 // mapping data
-                var data = orders.Adapt<IEnumerable<OrderDto>>();
+                var data = entities.Adapt<IEnumerable<OrderDto>>();
 
                 return new Result<IEnumerable<OrderDto>> { Success = true, Data = data };
             }
@@ -89,12 +89,12 @@ namespace EP.Order.Services.Classes
                     return new Result<OrderDto> { Message = "Product ID is not valid." };
 
                 // gets a order by its PK
-                var order = await _repository.GetByConditionAsync(x => x.Id == id);
-                if (order is null)
+                var entity = await _repository.GetByConditionAsync(x => x.Id == id);
+                if (entity is null)
                     return new Result<OrderDto> { Message = "No data found." };
 
                 // mapping data
-                var data = order.Adapt<OrderDto>();
+                var data = entity.Adapt<OrderDto>();
 
                 return new Result<OrderDto> { Success = true, Data = data };
             }

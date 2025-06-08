@@ -65,12 +65,12 @@ namespace EP.Product.Services.Classes
             try
             {
                 // gets all products
-                var products = await _repository.GetAllAsync();
-                if (products.IsNullOrEmpty())
+                var entities = await _repository.GetAllAsync();
+                if (entities.IsNullOrEmpty())
                     return new Result<IEnumerable<ProductDto>> { Message = "No data found." };
 
                 // data mapping
-                var data = products.Adapt<IEnumerable<ProductDto>>();
+                var data = entities.Adapt<IEnumerable<ProductDto>>();
 
                 return new Result<IEnumerable<ProductDto>> { Success = true, Data = data };
             }
@@ -90,12 +90,12 @@ namespace EP.Product.Services.Classes
                     return new Result<ProductDto> { Message = "Product ID is not valid." };
 
                 // gets a product by its PK
-                var product = await _repository.GetByConditionAsync(x => x.Id == id);
-                if (product is null)
+                var entity = await _repository.GetByConditionAsync(x => x.Id == id);
+                if (entity is null)
                     return new Result<ProductDto> { Message = "No data found." };
 
                 // data mapping
-                var data = product.Adapt<ProductDto>();
+                var data = entity.Adapt<ProductDto>();
 
                 return new Result<ProductDto> { Success = true, Data = data };
             }

@@ -67,7 +67,7 @@ namespace EP.Order.Controllers
         /// <summary>
         /// Retrieves a order by its id.
         /// </summary>
-        /// <param name="id">The PK of the order.</param>
+        /// <param name="id">The unique identifier of the order</param>
         [HttpGet("get-a-order")]
         public async Task<JsonResult> GetOrder(int id)
         {

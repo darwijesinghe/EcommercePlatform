@@ -9,7 +9,7 @@ namespace EP.Inventory.Services.Interfaces
     public interface IInventoryService
     {
         /// <summary>
-        /// Retrieves all inventory data.
+        /// Retrieves all the inventory data.
         /// </summary>
         /// <returns>
         /// A <see cref="Result{IEnumerable{InventoryItemDto}}"/> containing a list of inventory data.

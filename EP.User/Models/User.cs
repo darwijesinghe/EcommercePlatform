@@ -11,7 +11,6 @@ namespace EP.User.Models
         /// <summary>
         /// The unique identifier of the user.
         /// </summary>
-        [JsonIgnore]
         public int Id                   { get; set; }
 
         /// <summary>
@@ -24,5 +23,10 @@ namespace EP.User.Models
         /// The user's password (should be hashed in real systems).
         /// </summary>
         public required string Password { get; set; }
+
+        /// <summary>
+        /// The user's role.
+        /// </summary>
+        public required string Role     { get; set; }
     }
 }

@@ -27,12 +27,12 @@ namespace EP.Inventory.Services.Classes
             try
             {
                 // gets all inventory data
-                var inventory = await _repository.GetAllAsync();
-                if (inventory.IsNullOrEmpty())
+                var entities = await _repository.GetAllAsync();
+                if (entities.IsNullOrEmpty())
                     return new Result<IEnumerable<InventoryItemDto>> { Message = "No data found." };
 
                 // mapping data
-                var data = inventory.Adapt<IEnumerable<InventoryItemDto>>();
+                var data = entities.Adapt<IEnumerable<InventoryItemDto>>();
 
                 return new Result<IEnumerable<InventoryItemDto>> { Success = true, Data = data };
             }

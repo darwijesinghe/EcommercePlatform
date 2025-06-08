@@ -19,28 +19,22 @@ public class Program
 
         builder.Services.AddControllers();
 
+        // Application settings
+        builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
+
         // Database service
         builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
 
-        // RabbitMQ settings
-        builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
-
-        // Repository service
-        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-        // RabbitMQ connection
-        builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-
-        // RabbitMQ publisher
-        builder.Services.AddSingleton<IMessagePublisher, MessagePublisher>();
-
-        // Business services
-        builder.Services.AddScoped<IOrderService, OrderService>();
-
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Application services
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        builder.Services.AddSingleton<IRabbitMqConnection      , RabbitMqConnection>();
+        builder.Services.AddSingleton<IMessagePublisher        , MessagePublisher>();
+        builder.Services.AddScoped<IOrderService               , OrderService>();
 
         var app = builder.Build();
 

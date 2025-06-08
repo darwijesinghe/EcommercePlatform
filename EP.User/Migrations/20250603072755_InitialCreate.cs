@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace UserService.Migrations
+namespace EP.User.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

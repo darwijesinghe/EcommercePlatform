@@ -22,5 +22,10 @@ namespace SharedLibrary.DTOs
         /// The user's password (should be hashed in real systems).
         /// </summary>
         public required string Password { get; set; }
+
+        /// <summary>
+        /// The user's role.
+        /// </summary>
+        public required string Role     { get; set; }
     }
 }

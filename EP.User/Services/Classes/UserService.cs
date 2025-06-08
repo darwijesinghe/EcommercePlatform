@@ -1,10 +1,10 @@
 ﻿using EP.User.Services.Interfaces;
 using Mapster;
 using SharedLibrary.DTOs;
+using SharedLibrary.Enums;
 using SharedLibrary.Helpers.Extensions;
 using SharedLibrary.Response;
 using SharedLibrary.Services.Interfaces;
-using System.Numerics;
 
 namespace EP.User.Services.Classes
 {
@@ -22,18 +22,23 @@ namespace EP.User.Services.Classes
         }
 
         /// <inheritdoc/>
-        public async Task<AuthResponse> RegisterUserAsync(UserDto data)
+        public async Task<Result> RegisterUserAsync(RegisterDto data)
         {
             try
             {
                 // validations
                 if (data is null)
-                    return new AuthResponse { Message = "Required data not found." };
+                    return new Result { Message = "Required data not found." };
 
                 // checks the user existence
                 var emails = await _repository.GetAllAsync();
                 if (emails is not null && emails.Any(x => x.Email.Equals(data.Email)))
-                    return new AuthResponse { Message = "Email address already exist in the system." };
+                    return new Result { Message = "Email address already exist in the system." };
+
+                // role validation
+                bool exists = Enum.IsDefined(typeof(UserRoles), data.Role);
+                if (!exists)
+                    return new Result { Message = "This role is not valid user role." };
 
                 // data mapping
                 var user = data.Adapt<Models.User>();
@@ -42,11 +47,14 @@ namespace EP.User.Services.Classes
                 await _repository.AddAsync(user);
                 await _repository.SaveChangesAsync();
 
-                return new AuthResponse { Success = true };
+                // mapping to DTO
+                var response = user.Adapt<UserDto>();
+
+                return new Result { Success = true };
             }
             catch (Exception ex)
             {
-                return new AuthResponse { Message = ex.Message };
+                return new Result { Message = ex.Message };
             }
         }
 
@@ -56,18 +64,64 @@ namespace EP.User.Services.Classes
             try
             {
                 // gets all users
-                var users = await _repository.GetAllAsync();
-                if (users.IsNullOrEmpty())
+                var entities = await _repository.GetAllAsync();
+                if (entities.IsNullOrEmpty())
                     return new Result<IEnumerable<UserDto>> { Message = "No data found." };
 
                 // data mapping
-                var data = users.Adapt<IEnumerable<UserDto>>();
+                var data = entities.Adapt<IEnumerable<UserDto>>();
 
                 return new Result<IEnumerable<UserDto>> { Success = true, Data = data };
             }
             catch (Exception ex)
             {
                 return new Result<IEnumerable<UserDto>> { Message = ex.Message };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<UserDto>> GetUserAsync(int id)
+        {
+            try
+            {
+                // gets user by id
+                var entity = await _repository.GetByConditionAsync(x => x.Id == id);
+                if (entity is null)
+                    return new Result<UserDto> { Message = "No data found." };
+
+                // data mapping
+                var data = entity.Adapt<UserDto>();
+
+                return new Result<UserDto> { Success = true, Data = data };
+            }
+            catch (Exception ex)
+            {
+                return new Result<UserDto> { Message = ex.Message };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<UserDto>> ValidateUserAsync(LoginDto data)
+        {
+            try
+            {
+                // validations
+                if (data is null)
+                    return new Result<UserDto> { Message = "Required data not found." };
+
+                // gets the user by email and password
+                var entity = await _repository.GetByConditionAsync(x => x.Email.Equals(data.Email) && x.Password.Equals(data.Password));
+                if (entity is null)
+                    return new Result<UserDto> { Message = "Invalid credentials." };
+
+                // data mapping
+                var response = entity.Adapt<UserDto>();
+
+                return new Result<UserDto> { Success = true, Data = response };
+            }
+            catch (Exception ex)
+            {
+                return new Result<UserDto> { Message = ex.Message };
             }
         }
     }

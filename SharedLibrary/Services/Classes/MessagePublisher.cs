@@ -8,7 +8,7 @@ using System.Text;
 namespace RabbitMQ.Shared.Classes
 {
     /// <summary>
-    /// Publishes messages to RabbitMQ.
+    /// Provides an implementation of <see cref="IMessagePublisher"/> that handles the RabbitMQ messaging functionalities.
     /// </summary>
     public class MessagePublisher : IMessagePublisher
     {
